@@ -41,6 +41,7 @@ class DTNMonitor:
             else:
                 new_net_snt_value = psutil.net_io_counters(pernic=True)[self.interface].bytes_sent
                 new_net_rec_value = psutil.net_io_counters(pernic=True)[self.interface].bytes_recv
+                psutil.net_connections()
 
             new_net_value = new_net_snt_value + new_net_rec_value
 
@@ -188,6 +189,11 @@ class DTNMonitor:
 
 
 
+def exec_print(command):
+    process = subprocess.Popen([command], stdout=subprocess.PIPE,stderr=subprocess.STDOUT, shell=True)
+    for line in iter(process.stdout.readline, b''):
+        # system print
+        sys.stdout.write(line)
 
 def show_interface():
     ### Show Disk and Interface
@@ -206,3 +212,28 @@ def show_interface():
             continue
         print('{:40s} {:20s} '.format(inf, addr))
 
+def show_nvme():
+
+    df = subprocess.Popen(["df", "-h"], stdout=subprocess.PIPE)
+    output = df.communicate()[0]
+    dfs = output.decode("utf8").split("\n")
+    dfs.pop(0)
+    print("==========================================================")
+    print('{:35s} {:7s}  {:7s} {:7s}'. \
+          format("Disk mountpoint", "size", "avail", "used%"))
+    print("==========================================================")
+    for i in dfs:
+        try:
+            xx = re.sub(" +", " ", i).split(" ")
+            if len(xx) == 6:
+                device, size, used, available, percent, mountpoint = xx
+                print('{:35s} {:7s}  {:7s} {:7s}' \
+                      .format(mountpoint, size, available, percent))
+        except:
+            continue
+
+
+    print("==========================================================")
+    print('{:35s} '.format("Directory File Check"))
+    print("==========================================================")
+    exec_print("ls -l /data/disk*/sc17")
