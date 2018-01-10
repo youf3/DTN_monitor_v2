@@ -29,6 +29,10 @@ class DTNMonitor:
         
         old_net_value = 0
         old_disk_value = 0
+        old_net_snt_value = 0
+        old_net_rec_value = 0
+        old_disk_r_value = 0
+        old_disk_w_value = 0
         count = 0
         prev_t = 0
         time_diff = 0
@@ -156,10 +160,15 @@ class DTNMonitor:
 
 
     def run_monitor(self, timeout=None):
-        self.network_monitor_list = []
-        self.diskio_monitor_list = []
         self.cup_monitor_list = []
         self.mem_monitor_list = []
+        self.network_monitor_list = []
+        self.network_snt_list = []
+        self.network_rec_list = []
+        self.diskio_monitor_list = []
+        self.diskio_write_list = []
+        self.diskio_read_list = []
+
         try:
             self.running = True
             m_thread = threading.Thread(target=self.monitor_bandwidth)
