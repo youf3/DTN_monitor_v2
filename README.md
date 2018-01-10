@@ -15,6 +15,7 @@ DTN/
 * monitor(CPU, mem, network, IO data generated from bandw.py)
 * NOAA/ (download data will be saved here)
   * grib2	(original)
+* 10G DTN tuning script
 
 ![architecture](https://raw.githubusercontent.com/waue0920/DTN_monitor/master/graph/archi.png)
 
@@ -109,6 +110,10 @@ sudo apt-get install pciutils
 7. Execute jupyter notebook step by step 
 ![architecture](https://raw.githubusercontent.com/waue0920/DTN_monitor/master/graph/p4.png)
 
+8. If needed, tune the system with the script (Don't forget to change interface name in the tune10G.bash)
+> bash tune10G.bash
+
 ## Author Information: 
 Peggy Lu (peggylu@narlabs.org.tw)
-weiyu Chen(wychen@narlabs.org.tw)
+weiyu Chen (wychen@narlabs.org.tw)
+Se-young Yu (young.yu@northwestern.edu)
