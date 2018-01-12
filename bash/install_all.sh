@@ -19,7 +19,8 @@ function f_check_for_root() {
 function f_centos_install(){
     #  nuttcp
     ## without inetd support
-    yum install -y python3 python-software-properties software-properties-common wget bzip2 make gcc iperf3;
+    yum install -y wget bzip2 make gcc iperf3;
+
     cd /tmp;
     wget http://nuttcp.net/nuttcp/nuttcp-8.1.4.tar.bz2;
     bzip2 -d nuttcp-8.1.4.tar.bz2;
@@ -31,7 +32,9 @@ function f_centos_install(){
     wget http://nuttcp.net/nuttcp/beta/nuttscp-2.3; chmod 755 nuttscp-2.3;cp nuttscp-2.3 /usr/local/bin/nuttscp;
     ln -sf /opt/nuttcp-8.1.4 /opt/nuttcp;
     mkdir /opt/nuttcp_workspace;
-    
+    chmod 755 /opt/nuttcp-8.1.4/nuttcp-8.1.4
+    chmod 755 /opt/nuttcp-8.1.4
+    chown -R root /opt/nuttcp-8.1.4 
     
     #  dtn_monitor
     ## install python34 for centos6 or centos7 if needed
@@ -43,9 +46,11 @@ function f_centos_install(){
     
     
     ## install jupyterhub
-    yum update;
+    yum -y install yum-utils python3 python-software-properties
+    yum -y groupinstall development
+    yum -y install https://centos7.iuscommunity.org/ius-release.rpm
     yum -y install https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-2.7.1-3.el7.x86_64.rpm ; # to fix nodejs
-    yum -y install python-pip ansible git  python34-devel libzmq3-dev npm nodejs-legacy  pciutils libfreetype6-dev python34-pip python34-devel ;
+    yum -y install git  python34-devel libzmq3-dev npm nodejs-legacy  pciutils libfreetype6-dev python34-pip python34-devel ;
     npm install -g configurable-http-proxy;
     pip3 install jupyterhub notebook paramiko psutil numpy pymongo matplotlib netifaces;
     pip3 install --upgrade pip;
@@ -76,10 +81,8 @@ function f_ubuntu_install(){
     apt-get -y install python-pip python3-pip ansible git python3-dev python-dev libzmq3-dev npm nodejs-legacy python3-matplotlib pciutils libfreetype6-dev;
     npm install -g configurable-http-proxy;
     pip3 install jupyterhub notebook paramiko psutil numpy pymongo netifaces;
-    pip3 install --upgrade matplotlib pip;
-    
-    ## don't forgot to assign the account/passwd in config.sh
-
+    ### pip3 error - '_NamespacePath' object has no attribute 'sort'
+    # pip3 install --upgrade matplotlib pip; # it will crash all pip3 and related project , test by 2018/1/18 "
 }
 
 function f_add_some_primission_sudoer(){
